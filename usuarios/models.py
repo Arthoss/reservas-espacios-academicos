@@ -23,5 +23,6 @@ class Usuario(AbstractUser):
 		choices=Rol.choices,
 		default=Rol.SOLICITANTE,
 	)
+	email = models.EmailField(unique=True)
 
 	objects = UsuarioManager()

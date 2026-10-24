@@ -9,9 +9,9 @@
 
 ## 2. Usuarios, roles y permisos
 
-- [ ] 2.1 Implementar el registro de solicitantes informando si el correo ya existe; usar una respuesta genérica indistinguible solo para autenticación fallida, tanto por correo inexistente como por contraseña incorrecta.
-- [ ] 2.2 Implementar asignación administrativa de roles y permisos por endpoint, incluyendo denegación a solicitantes y usuarios no autenticados.
-- [ ] 2.3 Probar registro válido y duplicado con respuesta explícita, autenticación válida e inválida con respuesta genérica, creación del primer administrador, cambio de roles y restricciones de acceso.
+- [x] 2.1 Implementar el registro de solicitantes informando si el correo ya existe; usar una respuesta genérica indistinguible solo para autenticación fallida, tanto por correo inexistente como por contraseña incorrecta.
+- [x] 2.2 Implementar asignación administrativa de roles y permisos por endpoint, incluyendo denegación a solicitantes y usuarios no autenticados.
+- [x] 2.3 Probar registro válido y duplicado con respuesta explícita, autenticación válida e inválida con respuesta genérica, creación del primer administrador, cambio de roles y restricciones de acceso.
 
 ## 3. Catálogo de espacios
 
