@@ -3,9 +3,9 @@
 ## 1. Base del proyecto
 
 - [ ] 1.1 Crear el proyecto Django y configurar Django REST Framework con configuración por entorno para PostgreSQL.
-- [ ] 1.2 Definir el modelo de usuario personalizado y el rol inicial antes de generar migraciones de las demás aplicaciones.
-- [ ] 1.3 Crear el primer administrador mediante el comando `createsuperuser` de Django y verificar sus permisos.
-- [ ] 1.4 Crear las aplicaciones modulares `usuarios`, `espacios` y `reservas`, y verificar migraciones y conexión con PostgreSQL.
+- [ ] 1.2 Crear las aplicaciones modulares `usuarios`, `espacios` y `reservas`.
+- [ ] 1.3 Definir el modelo de usuario personalizado y el rol inicial en `usuarios` antes de generar migraciones de las demás aplicaciones, y verificar migraciones y conexión con PostgreSQL.
+- [ ] 1.4 Crear el primer administrador mediante el comando `createsuperuser` de Django y verificar sus permisos.
 
 ## 2. Usuarios, roles y permisos
 
