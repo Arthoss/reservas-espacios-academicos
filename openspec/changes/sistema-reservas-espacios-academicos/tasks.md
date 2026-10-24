@@ -15,10 +15,10 @@
 
 ## 3. Catálogo de espacios
 
-- [ ] 3.1 Implementar creación, consulta, edición, activación y desactivación de espacios con validación de nombre, tipo y capacidad.
-- [ ] 3.2 Exigir autenticación para consultar y filtrar el catálogo; restringir su administración a administradores y exponer solo espacios activos para nuevas reservas.
-- [ ] 3.3 Al desactivar un espacio, conservar las reservas existentes con su estado y vigencia; probar que solo se bloquean nuevas reservas.
-- [ ] 3.4 Proteger espacios referenciados por reservas contra eliminación permanente y probar cada operación y denegación por rol.
+- [x] 3.1 Implementar creación, consulta, edición, activación y desactivación de espacios con validación de nombre, tipo y capacidad.
+- [x] 3.2 Exigir autenticación para consultar y filtrar el catálogo; restringir su administración a administradores y exponer solo espacios activos para nuevas reservas.
+- [ ] 3.3 Al desactivar un espacio, conservar las reservas existentes con su estado y vigencia; probar que solo se bloquean nuevas reservas. Pendiente de verificar la conservación y el bloqueo de nuevas reservas hasta que exista `Reserva` en la sección 4.
+- [ ] 3.4 Proteger espacios referenciados por reservas contra eliminación permanente y probar cada operación y denegación por rol. La futura FK `Reserva.espacio` debe usar `on_delete=PROTECT`; la prueba con una reserva referenciada queda pendiente hasta la sección 4.
 
 ## 4. Solicitudes y disponibilidad
 
