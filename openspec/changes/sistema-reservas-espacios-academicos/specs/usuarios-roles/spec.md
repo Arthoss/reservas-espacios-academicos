@@ -19,6 +19,14 @@ El sistema DEBE permitir que una persona cree una cuenta con identidad y credenc
 - **CUANDO** una persona intenta registrarse de nuevo con ese correo
 - **ENTONCES** el sistema rechaza el registro e informa que la identidad ya está en uso
 
+### Requirement: Inicialización del primer administrador
+El sistema DEBE permitir crear el primer usuario administrador mediante el comando `createsuperuser` de Django, sin requerir una cuenta administradora previa.
+
+#### Scenario: Operador crea el primer administrador
+- **DADO** que el sistema aún no tiene una cuenta administradora
+- **CUANDO** un operador ejecuta `createsuperuser` con credenciales válidas
+- **ENTONCES** el sistema crea una cuenta activa con permisos de administrador
+
 ### Requirement: Autenticación de usuarios
 El sistema DEBE autenticar a los usuarios mediante sus credenciales y no revelar si el correo o la contraseña fueron incorrectos.
 

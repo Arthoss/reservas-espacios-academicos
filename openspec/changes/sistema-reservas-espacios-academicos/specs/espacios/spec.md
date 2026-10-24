@@ -7,7 +7,7 @@ Definir el catálogo consultable de espacios académicos y las acciones administ
 ## ADDED Requirements
 
 ### Requirement: Consulta del catálogo de espacios activos
-El sistema DEBE permitir a los usuarios consultar los espacios activos y sus datos de identificación, tipo y capacidad.
+El sistema DEBE permitir únicamente a usuarios autenticados consultar los espacios activos y sus datos de identificación, tipo y capacidad.
 
 #### Scenario: Usuario consulta espacios activos
 - **DADO** que existen espacios activos e inactivos
@@ -19,6 +19,11 @@ El sistema DEBE permitir a los usuarios consultar los espacios activos y sus dat
 - **CUANDO** un usuario filtra el catálogo por un tipo admitido
 - **ENTONCES** el sistema devuelve únicamente los espacios activos de ese tipo
 
+#### Scenario: Usuario no autenticado consulta el catálogo
+- **DADO** que la persona no está autenticada
+- **CUANDO** intenta consultar o filtrar el catálogo
+- **ENTONCES** el sistema deniega el acceso y no devuelve espacios
+
 ### Requirement: Administración del catálogo
 El sistema DEBE permitir a los administradores crear, modificar, activar y desactivar espacios, y denegar estas acciones a los solicitantes.
 
@@ -29,8 +34,9 @@ El sistema DEBE permitir a los administradores crear, modificar, activar y desac
 
 #### Scenario: Administrador desactiva un espacio
 - **DADO** que el actor autenticado es administrador y el espacio existe
+- **Y** el espacio tiene reservas existentes
 - **CUANDO** desactiva el espacio
-- **ENTONCES** el sistema lo oculta del catálogo disponible para nuevas reservas sin eliminar sus reservas anteriores
+- **ENTONCES** el sistema lo oculta del catálogo para nuevas reservas y conserva todas las reservas existentes con su estado y vigencia sin cambios
 
 #### Scenario: Solicitante modifica el catálogo
 - **DADO** que el actor autenticado es solicitante

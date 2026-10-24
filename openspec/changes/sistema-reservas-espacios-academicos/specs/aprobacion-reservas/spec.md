@@ -11,8 +11,21 @@ El sistema DEBE permitir que un administrador apruebe una solicitud pendiente y 
 
 #### Scenario: Administrador aprueba una solicitud pendiente
 - **DADO** que existe una solicitud pendiente y el actor autenticado es administrador
+- **Y** el inicio de la franja aún no ha pasado
 - **CUANDO** el administrador la aprueba
 - **ENTONCES** el sistema cambia su estado a aprobada y conserva quién realizó la decisión
+
+#### Scenario: Administrador intenta aprobar una solicitud cuyo inicio ya pasó
+- **DADO** que existe una solicitud pendiente y su inicio ya pasó
+- **Y** el actor autenticado es administrador
+- **CUANDO** intenta aprobarla
+- **ENTONCES** el sistema deniega la aprobación y conserva la solicitud pendiente
+
+#### Scenario: Administrador rechaza una solicitud cuyo inicio ya pasó
+- **DADO** que existe una solicitud pendiente y su inicio ya pasó
+- **Y** el actor autenticado es administrador
+- **CUANDO** la rechaza
+- **ENTONCES** el sistema cambia su estado a rechazada, registra quién tomó la decisión y libera la franja
 
 #### Scenario: Solicitante intenta aprobar una solicitud
 - **DADO** que el actor autenticado tiene rol de solicitante

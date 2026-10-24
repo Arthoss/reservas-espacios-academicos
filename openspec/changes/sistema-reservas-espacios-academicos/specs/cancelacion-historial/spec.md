@@ -7,7 +7,7 @@ Asegurar que las cancelaciones respeten la propiedad de la reserva y que las con
 ## ADDED Requirements
 
 ### Requirement: Cancelación por el solicitante propietario
-El sistema DEBE permitir a un solicitante cancelar sus reservas pendientes o aprobadas antes del inicio de la franja, sin permitir cancelar reservas de otra persona.
+El sistema DEBE permitir solo al solicitante propietario cancelar sus reservas pendientes o aprobadas antes del inicio de la franja; un administrador no puede cancelar reservas ajenas.
 
 #### Scenario: Solicitante cancela su reserva futura
 - **DADO** que el solicitante autenticado es propietario de una reserva pendiente o aprobada cuyo inicio no ha ocurrido
@@ -19,10 +19,20 @@ El sistema DEBE permitir a un solicitante cancelar sus reservas pendientes o apr
 - **CUANDO** el solicitante autenticado intenta cancelarla
 - **ENTONCES** el sistema deniega la acción y conserva el estado de la reserva
 
+#### Scenario: Administrador intenta cancelar una reserva ajena
+- **DADO** que la reserva pertenece a un solicitante distinto del administrador
+- **CUANDO** el administrador intenta cancelarla
+- **ENTONCES** el sistema deniega la acción y conserva el estado de la reserva
+
 #### Scenario: Cancelación después del inicio
 - **DADO** que la franja de la reserva ya comenzó
 - **CUANDO** el solicitante intenta cancelarla
 - **ENTONCES** el sistema rechaza la cancelación y conserva el estado actual
+
+#### Scenario: Intento de cancelar una reserva rechazada o ya cancelada
+- **DADO** que la reserva está rechazada o ya está cancelada
+- **CUANDO** el solicitante propietario intenta cancelarla
+- **ENTONCES** el sistema informa que la transición no es válida y conserva el estado existente
 
 ### Requirement: Consulta del historial propio
 El sistema DEBE permitir a cada solicitante consultar las reservas propias con sus datos de espacio, franja y estado actual.
@@ -51,12 +61,18 @@ El sistema DEBE permitir a un administrador consultar el historial de reservas d
 - **ENTONCES** el sistema deniega el acceso y no revela reservas de otros usuarios
 
 ### Requirement: Trazabilidad de cambios de reserva
-El sistema DEBE conservar un registro consultable de la creación y de cada transición de estado de una reserva, incluyendo estado anterior y nuevo, actor y fecha y hora del cambio.
+El sistema DEBE conservar un registro consultable de la creación y de cada transición de estado de una reserva, incluyendo estado anterior y nuevo, actor y fecha y hora del cambio; solo el propietario de la reserva o un administrador puede consultar sus eventos.
 
 #### Scenario: Consulta de cambios de una reserva
 - **DADO** que una reserva fue creada y luego aprobada o cancelada
+- **Y** el actor autenticado es su propietario o un administrador
 - **CUANDO** un usuario autorizado consulta el historial de esa reserva
 - **ENTONCES** el sistema devuelve los eventos en orden cronológico con estado anterior, estado nuevo, actor y fecha y hora
+
+#### Scenario: Otro solicitante intenta consultar los eventos
+- **DADO** que el actor autenticado es solicitante y no es propietario de la reserva
+- **CUANDO** consulta los eventos de esa reserva
+- **ENTONCES** el sistema deniega el acceso y no revela sus eventos
 
 #### Scenario: Cambio de estado no elimina eventos previos
 - **DADO** que una reserva ya tiene eventos de historial

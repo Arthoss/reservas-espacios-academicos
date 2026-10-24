@@ -7,7 +7,7 @@ Establecer cómo se solicitan reservas, cómo se consulta la disponibilidad y c�
 ## ADDED Requirements
 
 ### Requirement: Creación de solicitudes de reserva
-El sistema DEBE permitir a un solicitante autenticado crear una solicitud para un espacio activo, indicando inicio, fin y motivo, y registrar la solicitud inicialmente como pendiente.
+El sistema DEBE permitir exclusivamente a solicitantes autenticados crear una solicitud para un espacio activo, indicando inicio, fin y motivo, y registrar la solicitud inicialmente como pendiente.
 
 #### Scenario: Solicitud válida
 - **DADO** que el solicitante está autenticado y el espacio está activo
@@ -16,6 +16,11 @@ El sistema DEBE permitir a un solicitante autenticado crear una solicitud para u
 
 #### Scenario: Usuario no autenticado solicita una reserva
 - **DADO** que la persona no está autenticada
+- **CUANDO** intenta crear una solicitud de reserva
+- **ENTONCES** el sistema deniega la acción y no crea una reserva
+
+#### Scenario: Administrador intenta crear una reserva
+- **DADO** que el actor autenticado tiene rol de administrador
 - **CUANDO** intenta crear una solicitud de reserva
 - **ENTONCES** el sistema deniega la acción y no crea una reserva
 
@@ -33,7 +38,7 @@ El sistema DEBE rechazar una solicitud cuya fecha de inicio no sea anterior a la
 - **ENTONCES** el sistema la rechaza y no ocupa disponibilidad
 
 ### Requirement: Consulta de disponibilidad
-El sistema DEBE informar si un espacio activo está disponible durante una franja, considerando las reservas pendientes y aprobadas.
+El sistema DEBE informar a usuarios autenticados si un espacio activo está disponible durante una franja, considerando las reservas pendientes y aprobadas.
 
 #### Scenario: Franja disponible
 - **DADO** que el espacio está activo y no hay reservas pendientes o aprobadas que se solapen con la franja consultada
@@ -44,6 +49,11 @@ El sistema DEBE informar si un espacio activo está disponible durante una franj
 - **DADO** que existe una reserva pendiente o aprobada que se solapa con la franja consultada
 - **CUANDO** un usuario consulta la disponibilidad
 - **ENTONCES** el sistema informa que la franja no está disponible
+
+#### Scenario: Usuario no autenticado consulta disponibilidad
+- **DADO** que la persona no está autenticada
+- **CUANDO** intenta consultar la disponibilidad de un espacio
+- **ENTONCES** el sistema deniega el acceso y no devuelve información de disponibilidad
 
 ### Requirement: Rechazo de solapamientos
 El sistema DEBE impedir que una solicitud pendiente o aprobada se solape con otra reserva pendiente o aprobada del mismo espacio.
