@@ -17,16 +17,16 @@
 
 - [x] 3.1 Implementar creación, consulta, edición, activación y desactivación de espacios con validación de nombre, tipo y capacidad.
 - [x] 3.2 Exigir autenticación para consultar y filtrar el catálogo; restringir su administración a administradores y exponer solo espacios activos para nuevas reservas.
-- [ ] 3.3 Al desactivar un espacio, conservar las reservas existentes con su estado y vigencia; probar que solo se bloquean nuevas reservas. Pendiente de verificar la conservación y el bloqueo de nuevas reservas hasta que exista `Reserva` en la sección 4.
-- [ ] 3.4 Proteger espacios referenciados por reservas contra eliminación permanente y probar cada operación y denegación por rol. La futura FK `Reserva.espacio` debe usar `on_delete=PROTECT`; la prueba con una reserva referenciada queda pendiente hasta la sección 4.
+- [x] 3.3 Al desactivar un espacio, conservar las reservas existentes con su estado y vigencia; probar que solo se bloquean nuevas reservas.
+- [x] 3.4 Proteger espacios referenciados por reservas contra eliminación permanente y probar cada operación y denegación por rol.
 
 ## 4. Solicitudes y disponibilidad
 
-- [ ] 4.1 Permitir solo a solicitantes autenticados crear solicitudes con propietario, espacio, inicio, fin, motivo y estado inicial pendiente; validar que el espacio esté activo y la franja sea futura y válida.
-- [ ] 4.2 Exigir autenticación para consultar disponibilidad, usando intervalos semiabiertos y considerando pendientes y aprobadas como ocupadas.
-- [ ] 4.3 Serializar la creación concurrente por espacio dentro de una transacción y añadir la restricción de exclusión en PostgreSQL para evitar solapamientos pendientes o aprobados.
-- [ ] 4.4 Convertir conflictos de integridad/disponibilidad en una respuesta API consistente sin dejar solicitudes duplicadas persistidas.
-- [ ] 4.5 Probar permisos de creación y consulta, solapamientos, franjas consecutivas, espacio inactivo y dos solicitudes concurrentes contra PostgreSQL con conexiones independientes.
+- [x] 4.1 Permitir solo a solicitantes autenticados crear solicitudes con propietario, espacio, inicio, fin, motivo y estado inicial pendiente; validar que el espacio esté activo y la franja sea futura y válida.
+- [x] 4.2 Exigir autenticación para consultar disponibilidad, usando intervalos semiabiertos y considerando pendientes y aprobadas como ocupadas.
+- [x] 4.3 Serializar la creación concurrente por espacio dentro de una transacción y añadir la restricción de exclusión en PostgreSQL para evitar solapamientos pendientes o aprobados.
+- [x] 4.4 Convertir conflictos de integridad/disponibilidad en una respuesta API consistente sin dejar solicitudes duplicadas persistidas.
+- [x] 4.5 Probar permisos de creación y consulta, solapamientos, franjas consecutivas, espacio inactivo y dos solicitudes concurrentes contra PostgreSQL con conexiones independientes.
 
 ## 5. Aprobación y rechazo
 

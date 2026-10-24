@@ -1,7 +1,11 @@
+from datetime import timedelta
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+from django.utils import timezone
 
+from reservas.models import Reserva
 from usuarios.models import Usuario
 
 from .models import Espacio
@@ -200,3 +204,74 @@ class EspaciosApiTests(APITestCase):
 
 		self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 		self.assertFalse(Espacio.objects.filter(pk=space.pk).exists())
+
+	def test_eliminar_espacio_con_reserva_es_rechazado(self):
+		self.client.force_authenticate(user=self.admin)
+		inicio = timezone.now() + timedelta(days=1)
+		reserva = Reserva.objects.create(
+			solicitante=self.solicitante,
+			espacio=self.auditorio,
+			inicio=inicio,
+			fin=inicio + timedelta(hours=1),
+			motivo='Reserva que protege el espacio',
+		)
+
+		response = self.client.delete(
+			reverse('espacios:espacio-detail', args=[self.auditorio.pk])
+		)
+
+		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+		self.assertTrue(Espacio.objects.filter(pk=self.auditorio.pk).exists())
+		self.assertTrue(Reserva.objects.filter(pk=reserva.pk).exists())
+
+	def test_desactivar_espacio_conserva_reservas_y_bloquea_nuevas(self):
+		inicio = timezone.now() + timedelta(days=2)
+		reservas_existentes = [
+			Reserva.objects.create(
+				solicitante=self.solicitante,
+				espacio=self.auditorio,
+				inicio=inicio,
+				fin=inicio + timedelta(hours=1),
+				motivo='Reserva pendiente existente',
+				estado=Reserva.Estado.PENDIENTE,
+			),
+			Reserva.objects.create(
+				solicitante=self.solicitante,
+				espacio=self.auditorio,
+				inicio=inicio + timedelta(hours=2),
+				fin=inicio + timedelta(hours=3),
+				motivo='Reserva aprobada existente',
+				estado=Reserva.Estado.APROBADA,
+			),
+		]
+		self.client.force_authenticate(user=self.admin)
+		response = self.client.patch(
+			reverse('espacios:espacio-detail', args=[self.auditorio.pk]),
+			{'activo': False},
+			format='json',
+		)
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.auditorio.refresh_from_db()
+		self.assertFalse(self.auditorio.activo)
+		for reserva in reservas_existentes:
+			reserva.refresh_from_db()
+			self.assertTrue(Reserva.objects.filter(pk=reserva.pk).exists())
+		self.assertEqual(
+			[reserva.estado for reserva in reservas_existentes],
+			[Reserva.Estado.PENDIENTE, Reserva.Estado.APROBADA],
+		)
+
+		self.client.force_authenticate(user=self.solicitante)
+		nueva_inicio = inicio + timedelta(days=1)
+		response = self.client.post(
+			reverse('reservas:crear'),
+			{
+				'espacio': self.auditorio.pk,
+				'inicio': nueva_inicio.isoformat(),
+				'fin': (nueva_inicio + timedelta(hours=1)).isoformat(),
+				'motivo': 'Nueva reserva tras desactivación',
+			},
+			format='json',
+		)
+		self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)

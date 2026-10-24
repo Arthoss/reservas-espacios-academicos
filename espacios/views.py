@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
+from django.db.models.deletion import ProtectedError
 
 from usuarios.models import Usuario
 from usuarios.permissions import IsAdministrator
@@ -36,3 +37,11 @@ class EspacioViewSet(viewsets.ModelViewSet):
 			queryset = queryset.filter(tipo=tipo)
 
 		return queryset
+
+	def perform_destroy(self, instance):
+		try:
+			instance.delete()
+		except ProtectedError as exc:
+			raise ValidationError(
+				'No se puede eliminar un espacio asociado a reservas.'
+			) from exc
